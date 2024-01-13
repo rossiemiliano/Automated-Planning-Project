@@ -14,8 +14,9 @@
 		valve1 valve2 - valve
 		bolt1 bolt2 - bolt
 		tool1 tool2 - tool
-		carrier1 -carrier 
-		robot1 - robotic_agent
+		carrier1 carrier2 -carrier 
+		robot1 robot2 - robotic_agent
+
 	)
 
 	(:init
@@ -50,6 +51,8 @@
 		; robots
 		(at robot1 warehouse)
 		(free robot1)
+		(at robot2 warehouse)
+		(free robot2)
 		
 		
 		(= (passages cnt) 0)
@@ -58,6 +61,10 @@
 		(at carrier1 warehouse)
 		(= (loaded_volume carrier1) 0)
 		(= (max_capacity carrier1) 2)
+
+		(at carrier2 warehouse)
+		(= (loaded_volume carrier2) 0)
+		(= (max_capacity carrier2) 2)
 
 		; supplies
 		(at valve1 warehouse)
@@ -71,10 +78,13 @@
 	)
 
 	(:goal (and
-	 		(exists (?v - valve) (delivered ?v work_station1))
+	 		
+			(exists (?v - valve) (delivered ?v work_station1))
 			(exists (?t - tool) (delivered ?t work_station1))
-
-			(exists (?b - bolt) (delivered ?b work_station4))		
+			;(at carrier1 location3)
+			
+			;(on_cart box2 carrier1)
+			(exists (?b - bolt) (delivered ?b work_station1))		
 			(exists (?t - tool) (delivered ?t work_station4))
 
 			(exists (?b - bolt) (delivered ?b work_station3))
@@ -93,8 +103,5 @@
 			)
 		)
 	)
-	
-	
-	(:metric minimize (passages cnt)	
-	)
+	(:metric minimize (passages cnt) )
 )

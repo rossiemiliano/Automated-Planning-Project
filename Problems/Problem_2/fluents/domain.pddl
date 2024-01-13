@@ -58,22 +58,7 @@
     )
 
 	; Moves a robot between two locations, if it is not already there
-	(:action move_free_robot
-		:parameters (?r - robotic_agent ?from ?to - location)
-		:precondition (and
-            (free ?r)
-            (not (with_cart ?r))
-			(not (= ?from ?to))
-			(adjacent ?from ?to)
-			(at ?r ?from) 
-		)
 
-		:effect (and
-			(at ?r ?to)
-			(not (at ?r ?from))
-		)
-	)
-    
     (:action move_robot_with_cart
         :parameters (?r - robotic_agent ?c - carrier ?from ?to - location)
         :precondition (and
@@ -81,19 +66,17 @@
             (not (= ?from ?to))
             (adjacent ?from ?to)
             (at ?r ?from)
-
             (at ?c ?from)
             (attached ?c ?r)
+			
         )
         :effect (and 
             (not (at ?r ?from))
             (not (at ?c ?from))
 
             (at ?c ?to)
-            (at ?c ?to)
-            (when (= ?to warehouse)
-                (increase (passages cnt) 1)
-            )
+            (at ?r ?to)
+           
 
                 
         )            
@@ -123,6 +106,8 @@
             (not (with_cart ?r))
             (not (with_robot ?c))
             (not (attached ?c ?r))
+			(increase (passages cnt) 1)
+            
         )
     )
 
@@ -148,7 +133,7 @@
             (increase (loaded_volume ?c) 1)
         )
     )
-
+	
     (:action pick_box_from_carrier
         :parameters (?r - robotic_agent ?c - carrier ?b - box ?l - location)
         :precondition(and 
@@ -156,7 +141,7 @@
             (at ?c ?l) 
             
             (not (with_cart ?r)) ;both cart and robot are free
-            (not (with_robot ?c)) ;this one could be optional
+            ;(not (with_robot ?c)) this one could be optional
 
             (free ?r) ;robot is not holding anything
 
@@ -214,7 +199,7 @@
 			(at ?r warehouse)
 			(at ?s warehouse)
 			(loaded ?r ?b)
-			(empty ?b)
+			(empty ?b)                                                                                                                                                     
 			(not (locked ?s))
 		)
 
