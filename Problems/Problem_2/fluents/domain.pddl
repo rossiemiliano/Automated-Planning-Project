@@ -76,18 +76,18 @@
 
             (at ?c ?to)
             (at ?r ?to)
-           
-
-                
+                           
         )            
     )    
     
 
     (:action attach_cart
-        :parameters(?c - carrier ?r - robotic_agent)
+        :parameters(?c - carrier ?r - robotic_agent ?l - location)
         :precondition(and
             (not (with_cart ?r))
             (not (with_robot ?c))
+			(at ?r ?l)
+			(at ?c ?l)
             (free ?r) ;robot is not holding anything
         )
         :effect (and
@@ -141,7 +141,7 @@
             (at ?c ?l) 
             
             (not (with_cart ?r)) ;both cart and robot are free
-            ;(not (with_robot ?c)) this one could be optional
+            (not (with_robot ?c)) ;this one could be optional
 
             (free ?r) ;robot is not holding anything
 
@@ -232,7 +232,7 @@
 	(:action deliver_supply
 		:parameters (?r - robotic_agent ?b - box ?s - supply ?ws - work_station ?l - location)
 		:precondition (and
-			(not (delivered ?s ?ws))
+			;(not (delivered ?s ?ws))
 			(at ?ws ?l)
 			(at ?r ?l)
 			(loaded ?r ?b)
